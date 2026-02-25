@@ -1,0 +1,62 @@
+﻿@model Todo.Models.ToDoItem
+
+@{
+    ViewData["Title"] = "Edit";
+    bool isEdit = (Model?.Id??0) != 0;
+    string actionName = isEdit ? "Edit" : "Create";
+}
+
+<h1>Edit</h1>
+
+<h4>ToDoItem</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        @* <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Id" class="control-label"></label>
+                <input asp-for="Id" class="form-control" />
+                <span asp-validation-for="Id" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Description" class="control-label"></label>
+                <input asp-for="Description" class="form-control" />
+                <span asp-validation-for="Description" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form> *@
+
+        @using (Html.BeginForm(actionName, "ToDo", FormMethod.Post))
+        {
+            @Html.AntiForgeryToken()
+            
+            @if(isEdit)
+            {
+                @Html.HiddenFor(m => m.Id)
+            }
+
+            <div class="form-group">
+                @Html.LabelFor(m => m.Description)
+                @Html.TextBoxFor(m => m.Description, new { @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.Description, "", new { @class = "text-danger" })
+            </div>
+
+            <br />
+
+            <button type="submit" class="btn btn-success">
+                @(isEdit ? "Update" : "Create")
+            </button>
+        }
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@* @section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+} *@
